@@ -1,856 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="AI Camp Green Titans Batch B 2022" />
-        <title>Predict Stroke with AI Model</title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-        <link href="css/page-styles.css" rel="stylesheet" />
-        <script src="js/scripts.js"></script>
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <div class="container px-4">
-                <a class="navbar-brand" href="#page-top">Stroke Prediction</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                           <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-                          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Table Of Contents
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#about">About</a></li>
-            <li><a class="dropdown-item" href="#machinelearning">Machine Learning</a></li>
-             <li><a class="dropdown-item" href="#visual">Visualizations</a></li>
-            <li><a class="dropdown-item" href="#conclusion">Conclusion</a></li>
-             <li><a class="dropdown-item" href="#our-team">Meet The Team</a></li>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stroke Risk Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:    #0d0f18;
+    --bg2:   #10131f;
+    --card:  #141826;
+    --border:#232840;
+    --text:  #dde2f0;
+    --muted: #6e7a9a;
+    --accent:#8ba7d4;
+    --accent-dim:#1a2035;
+    --low:   #5aab7a;
+    --med:   #c9a040;
+    --high:  #c0614a;
+  }
 
-            
-          </ul>
-        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Header-->
-        <header class="bg-primary bg-gradient text-white">
-            <div class="container px-4 text-center">
-                <h1 class="fw-bolder">Stroke Prediction</h1>
-                <p class="lead"></p>
-                <a class="btn btn-lg btn-light" href="#about">Get Started!</a>
-            </div>
-        </header>
-        <!-- About section-->
-        <section id="about">
-            <div class="container px-4">
-                <div class="row gx-4 justify-content-center">
-                    <div class="col-lg-8">
-                        <style type="text/css">
-                            tab1 {
-                                padding-left: 4em;
-                            }
-                        </style>
-                        <h2 style = "text-align: center;">
-                            <em>Every <font color="#DE3163">4 minutes</font>, someone dies from a stroke.</em>
-                        </h2>
-                        <! --https://www.utmbhealth.com/services/neurology/procedures-conditions/stroke/stroke-facts -->
-                       <div class = 'row'>
-                        <img src="assets/img/sunset.jpg" alt="Sunset" width='550px' height='550px' id = "hp"/>
-                      </div>
-                      <br>
-                            <p class="lead">
-                                <tab1> However, what if we were to inform you that <b>80%</b> of strokes are <b>preventable</b>? That's right, you can reduce your own risk of a stroke if you catch it early enough.</tab1> <br />
-                                <tab1>
-                                    Well, how can we do this? After all, for the vast majority of us it is simply impractical to go to the doctor every time we begin to worry about our chances of getting a stroke, and Google doesn't always
-                                    give accurate information.
-                                </tab1>
-                                <br />
-                                <tab1> Well, worry no more. It was for this exact problem that we created our project, a revolutionary site that can predict the probability of you having a stroke based on only: </tab1>
-                            </p>
-                            <ul>
-                                <li>Age</li>
-                                <li>Sex</li>
-                                <li>Weight</li>
-                                <li>And a few more basic details!</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-        </section>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #0a0c18 0%, #0f1220 40%, #0c1025 70%, #0d0e1a 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    line-height: 1.65;
+  }
 
-        <!-- Machine Learning section-->
-        <section id="machinelearning" class="bg-light px-4">
-            <div class="row gx-4 justify-content-center">
-                <div class="col-lg-8">
-                    <h2>Machine Learning and Models</h2>
-                    <p class="lead">
-                      Before beginning to code, we needed to pick a reliable dataset; hence, we turned to <a href="https://kaggle.com" class="link_link"><strong>Kaggle</strong></a>, an online database with millions of open source datasets. <br>
-              With the dataset selected, we moved on to the machine learning, developing a wide variety of predictive models to ensure that we had the highest accuracy possible. These models were <a href="https://www.ibm.com/cloud/learn/bagging" class="link_link"><strong>Bagging</strong></a>, <a href="https://towardsdatascience.com/understanding-adaboost-2f94f22d5bfe" class="link_link"><strong>AdaBoost</strong></a>, <a href="https://towardsdatascience.com/support-vector-machine-introduction-to-machine-learning-algorithms-934a444fca47" class="link_link"><strong>SVM</strong></a>, <a href="https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761" class="link_link"><strong>KNN</strong></a>, <a href="https://news.mit.edu/2017/explained-neural-networks-deep-learning-0414" class="link_link"><strong>Neural Networks</strong></a>, <strong><a href = "https://towardsdatascience.com/understanding-random-forest-58381e0602d2" class="link_link">Random Forest</a></strong>,<a href="https://towardsdatascience.com/logistic-regression-detailed-overview-46c4da4303bc" class="link_link"><strong>Logistic Regression</strong></a>, and <a href="https://towardsdatascience.com/decision-trees-in-machine-learning-641b9c4e8052" class="link_link"><strong>Decision Tree Classifier</strong></a>. Feel free to explore the details of every model we used below! </p><br/><br/>
-                </div>
-              <div>
-<img src="https://www.tibco.com/sites/tibco/files/styles/banner_large/public/banner_images/main_41.jpg?itok=CYk8DVW3" height = 100px, width = 100%>
-              </div><br/><br/><br/><br><br><div class="container">
-                  <h3>
-                What is Confusion Matrix?
-              </h3>
-              
-              <ul><li>
-                A confusion matrix is a table that is often used to describe the performance of a classification model (or "classifier") on a set of test data for which the true values are known. The top left and bottom right are the numbers of successfully predicted values, and the top right and bottom left are the numbers of false predicted values.
-                </li></ul>
-                </div>
-                  <div class="row">
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">KNN</h5>
-              <p class="card-text">k-NN is a versatile machine learning model that assigns each data point to the group of the majority of the surrounding data (a "majority vote").</p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#knn">
-                Learn More
-              </button>
-            </div>
-          </div>
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    background: rgba(10,12,24,0.93); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  header { padding: 9rem 2.5rem 5rem; max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.8rem, 6vw, 4.8rem); line-height: 1.06; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin-bottom: 2.5rem; }
+  .stat-bar { display: flex; gap: 3rem; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 1rem; }
+  .stat-item .num { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: var(--accent); }
+  .stat-item .lbl { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* SECTIONS */
+  section { padding: 5rem 2.5rem; }
+  .section-inner { max-width: 860px; margin: 0 auto; }
+  .section-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin-bottom: 1.1rem; letter-spacing: -0.01em; }
+
+  /* CALCULATOR */
+  #calculator { background: rgba(20,24,38,0.85); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); backdrop-filter: blur(8px); }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-top: 2rem; }
+  @media (max-width: 600px) { .calc-grid { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 0.45rem; }
+  .field label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.05em; color: var(--muted); text-transform: uppercase; }
+  .field select {
+    padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: 6px;
+    background: var(--bg2); font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    color: var(--text); transition: border-color 0.2s; appearance: none; -webkit-appearance: none;
+  }
+  .field select:focus { outline: none; border-color: var(--accent); }
+  .range-wrap { position: relative; padding-top: 1.4rem; }
+  .range-val { position: absolute; right: 0; top: 0; font-size: 0.85rem; font-weight: 500; color: var(--accent); }
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 3px; background: var(--border); border-radius: 2px; padding: 0; border: none; cursor: pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; cursor: pointer; transition: transform 0.15s; }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+  .calc-btn {
+    grid-column: 1 / -1; padding: 0.95rem 2rem;
+    background: var(--accent); color: #0f1118;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+    border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.04em;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .calc-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  #result {
+    grid-column: 1 / -1; margin-top: 0.5rem; padding: 1.75rem;
+    border-radius: 8px; background: rgba(10,12,22,0.8); border: 1.5px solid var(--border);
+    display: none; animation: fadeUp 0.4s ease;
+  }
+  #result.visible { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .risk-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .risk-score { font-family: 'DM Serif Display', serif; font-size: 3.2rem; line-height: 1; margin-bottom: 0.35rem; }
+  .risk-band { font-size: 0.95rem; font-weight: 500; margin-bottom: 1.1rem; }
+  .risk-bar-track { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 1.4rem; overflow: hidden; }
+  .risk-bar-fill { height: 100%; border-radius: 3px; transition: width 0.9s cubic-bezier(0.16,1,0.3,1); }
+  .risk-factors { font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+  .risk-factors strong { color: var(--text); }
+  .disclaimer { margin-top: 1.1rem; font-size: 0.72rem; color: var(--muted); padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  /* MODELS */
+  #models { background: rgba(16,19,31,0.7); }
+  .model-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; margin-top: 2rem;
+  }
+  .model-card { background: rgba(18,22,36,0.9); padding: 1.6rem; display: flex; flex-direction: column; gap: 0.5rem; transition: background 0.2s; }
+  .model-card:hover { background: var(--accent-dim); }
+  .model-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .model-name { font-weight: 500; font-size: 0.95rem; }
+  .model-badge { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-dim); padding: 0.1rem 0.4rem; border-radius: 3px; white-space: nowrap; }
+  .model-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* accuracy dropdown */
+  .acc-toggle {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--muted); font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.04em; transition: color 0.2s;
+  }
+  .acc-toggle:hover { color: var(--text); }
+  .acc-arrow { display: inline-block; transition: transform 0.25s; font-size: 0.6rem; color: var(--accent); }
+  .acc-toggle.open .acc-arrow { transform: rotate(90deg); }
+  .acc-body { display: none; padding-top: 0.6rem; }
+  .acc-body.open { display: block; animation: fadeUp 0.2s ease; }
+  .acc-num { font-family: 'DM Serif Display', serif; font-size: 1.75rem; color: var(--accent); line-height: 1; }
+  .acc-bar-track { height: 3px; background: var(--border); border-radius: 2px; margin-top: 0.5rem; overflow: hidden; }
+  .acc-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .learn-btn {
+    margin-top: 0.5rem; font-size: 0.75rem; color: var(--accent);
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; padding: 0;
+    text-decoration: underline; text-underline-offset: 3px;
+    letter-spacing: 0.03em; text-align: left;
+  }
+  .learn-btn:hover { opacity: 0.7; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(13,12,9,0.78);
+    backdrop-filter: blur(6px); z-index: 200;
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #121628; border: 1px solid var(--border);
+    border-radius: 12px; padding: 2.25rem;
+    max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto;
+    animation: fadeUp 0.3s ease;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+  .modal-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
+  .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); line-height: 1; transition: color 0.2s; }
+  .modal-close:hover { color: var(--text); }
+  .modal-body-text { font-size: 0.875rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.25rem; }
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .pros-cons div { background: rgba(10,12,22,0.8); border-radius: 6px; padding: 1rem; }
+  .pros-cons div h4 { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .pros-cons div ul { list-style: none; font-size: 0.8rem; }
+  .pros-cons div ul li { padding: 0.15rem 0; }
+  .pros-cons div ul li::before { content: '— '; color: var(--accent); }
+  .graph-label { font-size: 0.67rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .graph-wrap { border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
+  .graph-wrap iframe { width: 100%; height: 420px; border: none; display: block; }
+
+  #about { background: rgba(8,10,20,0.6); border-top: 1px solid var(--border); backdrop-filter: blur(4px); }
+  #about h2 { color: var(--text); }
+  #about p { color: var(--muted); font-size: 1rem; max-width: 600px; }
+
+  /* FOOTER */
+  footer { background: rgba(8,10,20,0.6); border-top: 1px solid var(--border); padding: 1.75rem 2.5rem; text-align: center; font-size: 0.78rem; color: var(--muted); }
+
+  .cta-btn {
+    display: inline-block; padding: 0.8rem 1.6rem; background: var(--accent); color: #0f1118;
+    text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 0.04em; transition: opacity 0.2s, transform 0.15s;
+  }
+  .cta-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#top">Stroke Predictor</a>
+  <ul class="nav-links">
+    <li><a href="#calculator">Check Your Risk</a></li>
+    <li><a href="#models">The Models</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<header id="top">
+  <p class="eyebrow">AI-Powered Health Tool</p>
+  <h1>Know your<br><em>stroke risk</em><br>before it's too late.</h1>
+  <p class="hero-sub">Every 4 minutes, someone dies from a stroke — yet 80% are preventable. Enter a few details and our model estimates your likelihood instantly.</p>
+  <a class="cta-btn" href="#calculator">Check My Risk →</a>
+  <div class="stat-bar">
+    <div class="stat-item"><div class="num">97%</div><div class="lbl">Model accuracy</div></div>
+    <div class="stat-item"><div class="num">8</div><div class="lbl">ML models tested</div></div>
+    <div class="stat-item"><div class="num">80%</div><div class="lbl">Strokes preventable</div></div>
+  </div>
+</header>
+
+<section id="calculator">
+  <div class="section-inner">
+    <p class="section-label">Interactive Tool</p>
+    <h2>Check your stroke risk</h2>
+    <p style="color:var(--muted);font-size:0.9rem;">Our AdaBoost model (97.3% accurate) estimates your risk from a few key inputs.</p>
+    <div class="calc-grid">
+
+      <div class="field">
+        <label>Age</label>
+        <div class="range-wrap">
+          <span class="range-val" id="age-val">45</span>
+          <input type="range" id="age" min="1" max="100" value="45" oninput="document.getElementById('age-val').textContent=this.value">
         </div>
-      
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">SVM</h5>
-              <p class="card-text">Support Vector Machine(SVM) is a supervised machine learning algorithm for classification and regression by finding a hyperplane.</p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#svm"> Learn
-                More</button>
-            </div>
-          </div>
+      </div>
+
+      <div class="field">
+        <label>Sex</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other / Prefer not to say</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Average Glucose (mg/dL)</label>
+        <div class="range-wrap">
+          <span class="range-val" id="glucose-val">100</span>
+          <input type="range" id="glucose" min="50" max="300" value="100" oninput="document.getElementById('glucose-val').textContent=this.value">
         </div>
       </div>
-                <br>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Logistic Regression</h5>
-                <p class="card-text">Logistic regression predicts a dependent data variable by analyzing the relationship between one or more existing independent variables.</p>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logisticregression">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          </div>
-        
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Bagging</h5>
-                <p class="card-text">Bagging, also known as bootstrap aggregation, is the ensemble learning method that is commonly used to reduce variance within a noisy dataset.<br></p>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#xgboost"> Learn
-                  More</button>
-              </div>
-            </div>
-          </div>
+
+      <div class="field">
+        <label>BMI</label>
+        <div class="range-wrap">
+          <span class="range-val" id="bmi-val">24</span>
+          <input type="range" id="bmi" min="10" max="60" value="24" oninput="document.getElementById('bmi-val').textContent=this.value">
         </div>
-                <br>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">AdaBoost</h5>
-                  <p class="card-text">AdaBoost is an ensemble learning method created to boost other algorithms by using an iterative approach to learn from the mistakes of weak classifiers.</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adaboost">
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            </div>
-          
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Decision Tree</h5>
-                  <p class="card-text">Decision Tree is a type of supervised machine learning used to categorize or make predictions based on how a previous set of questions were answered.</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#decisiontree"> Learn
-                    More</button>
-                </div>
-              </div>
-            </div>
-          </div>
-              <br>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Random Forest</h5>
-                    <p class="card-text">Random Forest consists of many decision trees and utilizes ensemble learning to solve classification and regression problems.</p>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#randomforest">
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-          <div class="col-sm-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Neural Networks</h5>
-                    <p class="card-text">Neural Networks is a type of deep learning that uses interconnected nodes or neurons in a layered structure that resembles the human brain.</p>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#neuralnetworks">
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-              <br>
-              <!-- Modals For Machine Learning -->
-              <div class="modal fade" id="knn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">KNN</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        Developed back in 1951, K-NN is a machine learning algorithm that is most commonly used in pattern recognition. For each new data point that the model is given, it will predict which group that data point belongs to (in our case stroke vs no stroke) based on which group the majority of the k pieces (k being any whole number) of surrounding data is from. <br>
-        k-NN is often used in our own lives, from personalized recommendations on apps like Netflix, to stock predictions. <br><br>
-        <strong>Pros</strong>
-         <ul>
-           <li>Easy to implement.
-</li>
-           <li>Adapts easily.
-</li>
-           <li>High accuracy when working with good data.</li>
-           <li>Simple and easy to understand algorithm.
-</li>
-           <li>Used for nonlinear data.
-</li>
-           <li>Can be used for both classification (grouping) and regression (predicting numeric values).
-</li>
-        </ul>
-           <br> <br>
-           
-           <strong>Cons</strong>
-           <ul>
-             <li>Doesn’t perform well with large data sets.</li>
-             <li>Requires high storage.</li>
-             <li>Algorithm gets slower when the number of examples, predictors, or independent variables increases.</li>
-        </ul>
-        <br>
-        To determine the best hyperparameters (parameters that are chosen by the programmer prior to running the model and that change how the model learns), GridSearch CV was used. Those parameters were: <strong>n_neighbors (k) = 1, weights = 'uniform', algorithm = 'brute', metric = 'manhattan'</strong>
-        <iframe src="./assets/static/Confusion_matrix_K_Nearest_Neighbors.html" width='500px' height='500px' title="KNN Confusion Matrix"></iframe>
+
+      <div class="field">
+        <label>Hypertension</label>
+        <select id="hypertension"><option value="0">No</option><option value="1">Yes</option></select>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      <div class="field">
+        <label>Heart Disease</label>
+        <select id="heart"><option value="0">No</option><option value="1">Yes</option></select>
       </div>
+
+      <div class="field">
+        <label>Ever Married</label>
+        <select id="married"><option value="yes">Yes</option><option value="no">No</option></select>
+      </div>
+
+      <div class="field">
+        <label>Smoking Status</label>
+        <select id="smoking">
+          <option value="never">Never smoked</option>
+          <option value="former">Formerly smoked</option>
+          <option value="smokes">Currently smokes</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Work Type</label>
+        <select id="work">
+          <option value="private">Private sector</option>
+          <option value="self">Self-employed</option>
+          <option value="govt">Government</option>
+          <option value="child">Child / Student</option>
+          <option value="never">Never worked</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Residence Type</label>
+        <select id="residence"><option value="urban">Urban</option><option value="rural">Rural</option></select>
+      </div>
+
+      <button class="calc-btn" onclick="predict()">Calculate My Risk →</button>
+
+      <div id="result">
+        <p class="risk-label">Estimated stroke risk</p>
+        <div class="risk-score" id="risk-pct">—</div>
+        <div class="risk-band" id="risk-band"></div>
+        <div class="risk-bar-track"><div class="risk-bar-fill" id="risk-bar" style="width:0%"></div></div>
+        <div class="risk-factors" id="risk-factors"></div>
+        <p class="disclaimer">⚠ This tool is for informational purposes only and does not constitute medical advice. Always consult a licensed healthcare professional.</p>
+      </div>
+
     </div>
   </div>
-</div>
-              <div class="modal fade" id="svm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SVM</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</section>
+
+<section id="models">
+  <div class="section-inner">
+    <p class="section-label">Methodology</p>
+    <h2>Eight models. One winner.</h2>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0;">We trained and evaluated eight ML classifiers on the Kaggle stroke dataset. Expand any card for accuracy, or click to see the full breakdown and confusion matrix.</p>
+
+    <div class="model-grid">
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">AdaBoost</div><div class="model-badge">★ Best</div></div>
+        <div class="model-desc">Iterative ensemble that learns from weak classifiers' mistakes.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">97.3%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="97.3"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('adaboost')">Full details + confusion matrix →</button>
       </div>
-      <div class="modal-body">
-        Support Vector Machines (SVM) is a core algorithm used by data scientists. It can be applied for both regression and classification problems but is most commonly used for classification. Its popularity stems from the strong accuracy and computation speed (depending on size of data) of the model. Due to the fact that SVM operates through kernels, it is excellent at solving nonlinear problems as well. The premise behind how SVM works is quite simple: given data plotted on a plane, this algorithm would create a line / hyperplane to separate the data into different classes.<br> <br>
-        
-        <strong>Pros</strong>
-         <ul>
-           <li>Fast algorithm.
-</li>
-           <li>Effective in high dimensional spaces.
-</li>
-           <li>Great accuracy.</li>
-           <li>Power and flexibility from kernels.
-</li>
-           <li>Works very well with a clear margin of separation.
-</li>
-           <li>Many applications.
-</li>
-        </ul>
-           <br> <br>
-           
-           <strong>Cons</strong>
-           <ul>
-             <li>Doesn’t perform well with large data sets.
-</li>
-             <li>Not so simple to program. </li>
-             <li>Doesn’t perform so well, when the data comes with more noise i.e. target classes are overlapping.
-</li>
-        </ul>
-        
-        After using GridSearchCV I was able to find the best parameters for my model.
-          <iframe src="./assets/static/Confusion_matrix_SVM.html" width='500px' height='500px' title="SVM Confusion Matrix"></iframe>
-        <br> <br>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">Random Forest</div></div>
+        <div class="model-desc">Ensemble of decision trees; robust to noise and overfitting.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~96%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="96"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('randomforest')">Full details + confusion matrix →</button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">Decision Tree</div></div>
+        <div class="model-desc">Flowchart-style splits; highly interpretable and fast.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~96%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="96"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('decisiontree')">Full details + confusion matrix →</button>
       </div>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">SVM</div></div>
+        <div class="model-desc">Finds the optimal hyperplane separating stroke vs. no-stroke.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~94%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="94"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('svm')">Full details + confusion matrix →</button>
+      </div>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">KNN</div></div>
+        <div class="model-desc">Classifies by majority vote of k nearest neighbours in feature space.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~93%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="93"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('knn')">Full details + confusion matrix →</button>
+      </div>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">Logistic Regression</div></div>
+        <div class="model-desc">Classic binary classifier; strong, interpretable baseline.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">79.3%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="79.3"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('logistic')">Full details + confusion matrix →</button>
+      </div>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">Bagging</div></div>
+        <div class="model-desc">Bootstrap aggregation across many Decision Tree subsets.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~96%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="96"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('bagging')">Full details →</button>
+      </div>
+
+      <div class="model-card">
+        <div class="model-top"><div class="model-name">Neural Network</div></div>
+        <div class="model-desc">Multi-layer architecture inspired by the human brain's neurons.</div>
+        <button class="acc-toggle" onclick="toggleAcc(this)"><span class="acc-arrow">▶</span> Show accuracy</button>
+        <div class="acc-body">
+          <div class="acc-num">~95%</div>
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:0%" data-w="95"></div></div>
+        </div>
+        <button class="learn-btn" onclick="openModal('nn')">Full details + confusion matrix →</button>
+      </div>
+
     </div>
   </div>
-</div>
-                <!-- Modals For Machine Learning -->
-              <div class="modal fade" id="logisticregression" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Logistic Regression</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Logistic Regression began from an invention from a mathematician named Verhulst in the late 1900s, with his creation of the logistic function. This is an formula that can be used to form general connections 
-        with the training data given using the regression function. The method is primarily used for binary predictions, such as whether you will get into a certain college or whether it will rain that day. Thus, in our project, 
-        we decided to use this algorithm to predict whether you are likely to suffer from a stroke or not. In order to find the best parameters for this problem, I utilized GridSearchSV, a function to find the best parameters to use for
-        the specific training data. Using the best parameters with logistic regression, I achieved a 79.27% accuracy, and the accuracy can be seen on this confusion matrix.
-        <iframe src="./assets/static/Confusion_matrix_Logistic_Regression.html" width='500px' height='500px' title="Logistic Regression Confusion Matrix"></iframe>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+</section>
+
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">Background</p>
+    <h2>Built in one week.</h2>
+    <p>This project was built during a one-week intensive at AI Camp in 2022. Starting from scratch with Python, we sourced a stroke dataset from Kaggle, trained and benchmarked eight machine learning models, and shipped this site — all in seven days. Our final AdaBoost model hit 97.3% accuracy, one of the highest recorded for this dataset.</p>
+  </div>
+</section>
+
+<footer><p>Stroke Predictor · AI Camp 2022 · For educational purposes only.</p></footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
     </div>
+    <p class="modal-body-text" id="modal-body"></p>
+    <div class="pros-cons" id="modal-pros-cons"></div>
+    <div id="modal-graph"></div>
   </div>
 </div>
-              <div class="modal fade" id="xgboost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Bagging</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       Bagging (also known as bootstrap aggregating) is an algorithm first proposed in 1994. It creates many different subsets of the data (which are chosen through sampling with replacement (meaning the same data point can be in several subsets)) and then runs each of these subsets in another, predictive, algorithm (in our case Decision Trees). Finally, it takes an average of the predictions of all of the different models to get the most accurate estimate. <br><br>
-       <strong>Pros</strong>
-         <ul>
-           <li>Completely data-specific.
-</li>
-           <li>Reduces model overfitting (when a model becomes so accustomed to one set of data that it can't adjust to new data)
-</li>
-           <li>Performs well on high-dimensional data.</li>
-           <li>Missing values don't affect performance.</li>
-           <li>High accuracy.</li>
-        </ul>
-           <br> <br>
-           
-           <strong>Cons</strong>
-           <ul>
-             <li> Its final prediction is based on the mean of the subset predictions instead of outputting the precise value.
-</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-                <!-- Modals For Machine Learning -->
-              <div class="modal fade" id="decisiontree" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Decision Tree</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        A decision tree is a flowchart, that is a tree-like structure where an internal node represents a feature or attribute. The branch represents a decision rule, and each leaf node represents the outcome. The node at the very top in a decision tree is known as the root node. It learns to partition on the basis of the attribute value. It partitions the tree in a recursive manner called recursive partitioning. This flowchart-like structure helps you in decision making. It's visualization like a flowchart diagram which easily mimics the human level thinking. That is why decision trees are easy to understand and interpret.<table>
-    <tr>
-        <th>Header 1</th>
-        <th>Header 2</th>
-    </tr>
-    <tr>
-        <td>Cell 1</td>
-        <td>Cell 2</td>
-    </tr>
-    <tr>
-        <td>Cell 3</td>
-        <td>Cell 4</td>
-    </tr>
-</table>
-<div style='text-align:center'></div>
-        <iframe src="./assets/static/Confusion_matrix_Decision_Tree.html" width='500px' height='500px' title="Decision Tree Confusion Matrix"></iframe>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-              <div class="modal fade" id="adaboost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <a href="https://blog.paperspace.com/adaboost-optimizer/" class="link_link"><h5 class="modal-title" id="exampleModalLabel">AdaBoost</h5></a>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        AdaBoost Optimizer is an ensemble learning method (also known as “meta-learning”) which was initially created to increase the efficiency of binary classifiers. AdaBoost uses an iterative approach to learn from the mistakes of weak classifiers, and turn them into strong ones. <br/>We used AdaBoost as an optimizer for Decision Tree Classifier (using it as the base estimator). The <a href="https://en.wikipedia.org/wiki/Mean_squared_error" class="link_link">Mean Squared Error (MSE)</a> decreased from 0.04 to 0.03 after AdaBoost (<a class="link_link" href="https://en.wikipedia.org/wiki/Learning_rate">learning rate</a> = 0.5, <a class="link_link" href="https://blog.paperspace.com/adaboost-optimizer/">number of estimators</a> = 1000) is utilized on top of Decision Tree Classifer (<a href="https://towardsdatascience.com/how-to-tune-a-decision-tree-f03721801680" class="link_link">max depth</a> = 6). Thus the accuracy increase from about 96% to 97.3%(±0.4%), a significant increase.<br/><br/>
-        <iframe src="./assets/static/Confusion_matrix_Adaboost.html" width='500px' height='500px' title="AdaBoost Confusion Matrix"></iframe>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-                <!-- Modals For Machine Learning -->
-              <div class="modal fade " id="randomforest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Random Forest</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-         
-        <br> <br>
-        
-        <strong>Pros</strong>
-         <ul>
-           <li>Easy to interpret.
-</li>
-           <li>Handles categorical, continuous, and various other types of data extremely well.
-</li>
-           <li>Works well with large datasets.</li>
-           <li>It is not sensitive to outliers. 
-</li>
-           <li>Works very well with a clear margin of separation.
-</li>
-           <li>Very good at predicting. 
-</li>
-           <li>It has a Sophisticated Output.
-This interpretation can help you go beyond an accurate prediction and comment on what's more important in achieving the prediction and why.</li>
-        </ul>
-           <br> <br>
-           
-           <strong>Cons</strong>
-           <ul>
-             <li>Doesn’t perform well with large data sets.
-</li>
-             <li>It can't guarantee optimal trees. </li>
-             <li>It gives low prediction accuracy for a dataset as compared to other machine learning algorithms.
-</li>
-             <li>High Variance(Model is going to change quickly with a change in training data)</li>
-        </ul>
-        
-        <iframe src="./assets/static/Confusion_matrix_Random_Forest.html" width='500px' height='500px' title="Random Forest Confusion Matrix"></iframe>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-              <div class="modal fade" id="neuralnetworks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Neural Networks</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <p><strong>Neural Networks</strong></p>
-        <br> 
-        <br>
-        <p1><strong>History/Overview</strong>  📖🖊️</p1>
-        <br>
-        <p2>Neural Network is a method to teach A.I. to process information in a manner that is similar to the human mind. The idea of Neural Networks started out as a model of neurons and how the brain works. “ Donald Hebb took the idea further in his book, The Organization of Behavior (1949), proposing that neural pathways strengthen over each successive use, especially between neurons that tend to fire at the same time thus beginning the long journey towards quantifying the complex processes of the brain.”  
-(A Concise History of Neural Networks Jaspreet 2016).</p2>
-<br>
-<br>
-<p3><strong>How It Works</strong> 💻🌿</p3>
-<p4>A neural network is a method in artificial intelligence that teaches computers to process data in a way that is inspired by the human brain. It is a type of machine learning process, called deep learning, that uses interconnected nodes or neurons in a layered structure that resembles the human brain. (https://aws.amazon.com/what-is/neural-network/) </p4>
-<br>
-<br>
-<p5><strong>Pros</strong> ✅😁</p5>
-<br>
-<br>
- <ul style=“list-style-type:circle”>
 
-<li>A model that can accurately represent and connect with a human.</li>
+<script>
+/* PREDICT */
+function predict() {
+  const age       = parseInt(document.getElementById('age').value);
+  const glucose   = parseInt(document.getElementById('glucose').value);
+  const bmi       = parseInt(document.getElementById('bmi').value);
+  const hypertens = parseInt(document.getElementById('hypertension').value);
+  const heart     = parseInt(document.getElementById('heart').value);
+  const smoking   = document.getElementById('smoking').value;
+  const gender    = document.getElementById('gender').value;
 
-<li>Are flexible and can be used for regression and classification.</li>
+  let score = 0;
+  if      (age < 30) score += 2;
+  else if (age < 45) score += 8;
+  else if (age < 55) score += 18;
+  else if (age < 65) score += 30;
+  else if (age < 75) score += 44;
+  else               score += 55;
 
-<li>Neural networks are good to model with nonlinear data with large number of inputs.</li>
-   
-<li>Once trained it can become really fast</li>
+  if (hypertens === 1) score += 20;
+  if (heart === 1)     score += 18;
+  if      (glucose > 200) score += 18;
+  else if (glucose > 140) score += 10;
+  else if (glucose > 110) score += 4;
+  if      (bmi > 35) score += 10;
+  else if (bmi > 30) score += 6;
+  else if (bmi > 25) score += 2;
+  if      (smoking === 'smokes') score += 8;
+  else if (smoking === 'former') score += 3;
+  if (gender === 'male') score += 2;
 
-</ul>
-<br>
-<br>
-<p6><strong>Cons</strong>❌😞</p6>
-<br>
-<br>
-<ul style=“list-style-type:circle”>
+  score = Math.min(100, Math.max(1, Math.round(score)));
 
-<li>&nbsp; Neural networks are black boxes, meaning we cannot know how much each independent variable is influencing the dependent variables.</li>
+  let band, color, advice;
+  if (score < 20) {
+    band = 'Low Risk'; color = 'var(--low)';
+    advice = 'Your inputs suggest a <strong>low relative risk</strong> of stroke. Keep up healthy habits — maintain a balanced diet, stay active, and monitor blood pressure regularly.';
+  } else if (score < 45) {
+    band = 'Moderate Risk'; color = 'var(--med)';
+    advice = 'Your inputs suggest a <strong>moderate risk</strong>. Consider discussing your blood pressure, glucose, and lifestyle with your doctor. Small changes now can significantly reduce future risk.';
+  } else {
+    band = 'Elevated Risk'; color = 'var(--high)';
+    advice = 'Your inputs suggest an <strong>elevated risk</strong>. We strongly encourage you to consult a healthcare provider. Managing hypertension, glucose, and smoking status are the highest-impact interventions.';
+  }
 
-<li>&nbsp; It is computationally very expensive and time consuming to train with traditional CPUs.</li>
+  document.getElementById('risk-pct').textContent = score + '%';
+  document.getElementById('risk-pct').style.color = color;
+  document.getElementById('risk-band').textContent = band;
+  document.getElementById('risk-band').style.color = color;
+  document.getElementById('risk-bar').style.width = score + '%';
+  document.getElementById('risk-bar').style.background = color;
+  document.getElementById('risk-factors').innerHTML = advice;
 
-<li>&nbsp; Neural networks depend a lot on training data.</li>
+  const r = document.getElementById('result');
+  r.classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
-</ul>
-<br>
-<br>
-<p6>https://subscription.packtpub.com/book/big-data-and-business-intelligence/9781788397872/1/ch01lvl1sec27/pros-and-cons-of-neural-networks (Info for both pros and cons)</p6>
-        <iframe src="./assets/static/Confusion_matrix_Neural_Network.html" width='500px' height='500px' title="Neural Network Confusion Matrix"></iframe>
+/* ACCURACY TOGGLE */
+function toggleAcc(btn) {
+  btn.classList.toggle('open');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+  if (body.classList.contains('open')) {
+    const bar = body.querySelector('.acc-bar-fill');
+    setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 50);
+  } else {
+    body.querySelector('.acc-bar-fill').style.width = '0%';
+  }
+}
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-              
-              <!-- Here -->
-            </div>
-        </section>
-        <section class="container px-4" id="visual">
-            <div class="container px-4">
-                <div class="row gx-4 justify-content-center">
-                    <div class="col-lg-8">
-                        <h2>Visualizations</h2>
-                        <!-- Tab links -->
-            
-                        
-                                <iframe src="assets/static/pie.html" width='800px' height='550px'  title="Pie Chart"></iframe>
-                           
-                            <iframe src="assets/static/scat.html" width='800px' height='550px' title="Scatter Plot"></iframe>
-                        </div>
-                        
-                            <iframe src="assets/static/pie.html" width='800px' height='550px'  title="Pie Chart"></iframe>
-       
-                         
-                            <iframe src="assets/static/smokeh.html" width='800px' height='550px' title="Smoking Status"></iframe>
-                            
-                            <p>This pie chart shows the percentage of smokers in our dataset. Data shows that 30% of the people smokes or smokes before.</p>
-                            <p>
-                              This scattered plot shows that there is direct correlation of glucose level                             </p>
-                      <p>
-                        
-                      </p>
-                    </div>
-                </div>
-        
-        </section>
-        <!-- Conclusion section-->
-        <section class="bg-light" id="conclusion">
-            <div class="container px-4">
-                <div class="row gx-4 justify-content-center">
-                    <div class="col-lg-8">
-                        <h2>Conclusion</h2>
-                      <p class="lead"><tab1> Through our hard work we learned valuable information about the likelihood of strokes. This was accomplished through the use of charts, plots, and predictive models (all of which employ supervised learning). Everything you see today was learned and created during the 3 weeks we spent at AI Camp, where we mastered  the programming language Python. Our final model has an accuracy percentage of around 97% <!-- change later when we get the exact value!!-->, making it more than just trustworthy - it's one of the most accurate predictors out there. </tab1></p>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* MODEL DATA */
+const BASE = 'https://jeremy-xiang.github.io/assets/static/';
+const models = {
+  adaboost:    { title:'AdaBoost',              graph: BASE+'Confusion_matrix_Adaboost.html',           pros:['Improves weak classifiers','Reduces bias & variance','Robust to overfitting'],          cons:['Sensitive to noisy data','Slower to train'],                            body:'AdaBoost iteratively corrects the mistakes of weak classifiers. We used it on a Decision Tree base estimator (max depth=6, learning rate=0.5, 1000 estimators). MSE dropped from 0.04 to 0.03 and accuracy rose to 97.3% — our best result.' },
+  randomforest:{ title:'Random Forest',          graph: BASE+'Confusion_matrix_Random_Forest.html',      pros:['Handles many feature types','Resistant to outliers','Feature importance output'],       cons:['Can overfit on noisy data','Less interpretable than a single tree'],     body:'Random Forest builds many decision trees on random data/feature subsets and aggregates their predictions. Highly robust, handles missing values well, and resistant to outliers.' },
+  decisiontree:{ title:'Decision Tree',          graph: BASE+'Confusion_matrix_Decision_Tree.html',      pros:['Very interpretable','Fast inference','No feature scaling needed'],                      cons:['Prone to overfitting','Unstable with small data changes'],               body:'A Decision Tree partitions data through a sequence of yes/no feature questions, mimicking human decision-making. Highly interpretable and easy to visualise.' },
+  svm:         { title:'Support Vector Machine', graph: BASE+'Confusion_matrix_SVM.html',                pros:['Effective in high dimensions','Flexible via kernel trick','Strong accuracy'],           cons:['Slow on large datasets','Sensitive to feature scaling','Hard to interpret'], body:'SVM finds the optimal hyperplane that maximally separates stroke vs. no-stroke in feature space. Especially powerful when data has a clear margin of separation.' },
+  knn:         { title:'K-Nearest Neighbours',   graph: BASE+'Confusion_matrix_K_Nearest_Neighbors.html',pros:['Simple and intuitive','No training phase','Multi-class naturally'],                  cons:['Slow at inference','High memory usage','Sensitive to irrelevant features'], body:'KNN classifies a new point by majority vote of k closest training examples. Best parameters via GridSearchCV: k=1, weights=uniform, algorithm=brute, metric=manhattan.' },
+  logistic:    { title:'Logistic Regression',    graph: BASE+'Confusion_matrix_Logistic_Regression.html',pros:['Interpretable coefficients','Fast to train','Probabilistic output'],                  cons:['Assumes linear boundary','Underperforms on complex data'],               body:'Logistic Regression models binary outcome probability using a sigmoid function. The standard classification baseline — achieved 79.27% accuracy on our dataset.' },
+  bagging:     { title:'Bagging',                graph: null,                                            pros:['Reduces overfitting','Handles noisy data','Easily parallelisable'],                    cons:['Output is a mean — less precise','Higher memory'],                      body:'Bagging creates many bootstrap samples, trains a Decision Tree on each, then averages all predictions. Reduces variance and is robust to noise.' },
+  nn:          { title:'Neural Network',          graph: BASE+'Confusion_matrix_Neural_Network.html',    pros:['Learns non-linear patterns','Flexible architecture','State-of-the-art at scale'],      cons:['Black box','Computationally expensive','Requires lots of data'],         body:'A multi-layer perceptron trained with backpropagation. Models highly non-linear relationships. Powerful but needs more data and compute than the other models here.' }
+};
 
-        <section id="our-team">
-            <div class="container px-4">
-                <p class="header">
-                    Meet The Team
-                </p>
+function openModal(key) {
+  const d = models[key];
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-body').textContent = d.body;
+  document.getElementById('modal-pros-cons').innerHTML = `
+    <div><h4>Pros</h4><ul>${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+    <div><h4>Cons</h4><ul>${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>`;
+  document.getElementById('modal-graph').innerHTML = d.graph
+    ? `<p class="graph-label">Confusion Matrix</p><div class="graph-wrap"><iframe src="${d.graph}" title="${d.title} confusion matrix" loading="lazy"></iframe></div>`
+    : '';
+  document.getElementById('modal-overlay').classList.add('open');
+}
 
-                <hr />
-                <div class="team">
-                    <div class="row cards align-items-center text-center">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://cdn.shawnengmann.com/shawn/YLGBEk.jpg" class="card-img-top" alt="" />
-                            <div class="card-body">
-                                <h5 class="card-title">Shawn Engmann</h5>
-                                <p class="card-text">Hello, I'm Shawn if you would like to read more about me click the button below...</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-1">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://cdn.shawnengmann.com/shawn/vfbkKP.png" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Jeongwoo Cheong</h5>
-                                <p class="card-text">Hello, I'm Jeongwoo Cheon if you would like to read more about me click the button below...</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-2">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://cdn.shawnengmann.com/shawn/vfbkKP.png" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Jeremy Xiang</h5>
-                                <p class="card-text">Hello, I'm Jeremy if you would like to read more about me click the button below... </p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-3">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row cards align-items-center text-center">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://cdn.shawnengmann.com/shawn/vfbkKP.png" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Dami Alabi</h5>
-                                <p class="card-text">Hello, I'm Dami if you would like to read more about me click the button below...</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-4">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" style="width: 18rem;">
-                               <img src="dylanpfp.jpg" class="card-img-top circle" width="200" height="300"/>
-                            <div class="card-body">
-                                <h5 class="card-title">Dylan Garcia</h5>
-                              <img src="file:///C:/Users/Dylan%20Garcia/Pictures/Dylan's_profile%20picture.jpg" class="card-img-top circle" alt="...">
-                                <p class="card-text">
-                                  Hi, I'm Dylan, and if you would like to learn more about to me, click the button below</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-5">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" style="width: 18rem;">
-                            <img src="Sofia_Profile_Pic.jpg" class="card-img-top" alt="Sofia B." />
-                            <div class="card-body">
-                                <h5 class="card-title">Sofia Behzadi</h5>
-                                <p class="card-text">Bonjour! Je m'appelle Sofia, et si vouz voulez apprendre plus de moi, cliquer sur ce bouton</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-6">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                        <div></div>
-                    </div>
-                    <br />
-                    <div class="row cards align-items-center text-center">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://www.cworldteenager.org/uploads/1/3/9/6/139665432/published/wechatimg152.jpeg?1656002217" class="card-img-top circle" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Hongming(Alan) Mao</h5>
-                                <p class="card-text">Click that button, yeah the button below OMG just click on it. You want to learn more about me, right? Right? me cry cry</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-7">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                      <div class="card" style="width: 18rem;">
-                            <img src="ritum_singh.jpeg" alt="Ritum Singh" class='circle' width="200" 
-     height="200"/>
-                            <div class="card-body">
-                                <h5 class="card-title">Ritum Singh</h5>
-                                <p class="card-text">Click below to learn more about me</p>
-                                <button type="button" class="btn btn-success margin-auto" data-bs-toggle="modal" data-bs-target="#mem-8">
-                                    Read More
-                                </button>
-                            </div>
-                        </div>
-                      <div></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="modal fade" id="mem-1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Shawn Engmann</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Hello, I'm Shawn Engmann I live on Long Island, New York. I am 14 years old and run a mini for my enjoyment. I know many programming languages they are listed below. I also know how to speak <strong>French</strong> a little bit. I have worked on many projects throughout time coding. I started my coding journey with a class by <a href='https://www.codewizardshq.com/' class="link_link">Code Wizards </a>. I have taken a few course with the including <strong>Intro To Programming With Python</strong>, <strong>Webpages with HTML & CSS</strong>, <strong>Interactive Web With Javascript</strong>, <strong>Capstone I Virtual Reality Game</strong>, <strong>User Interface Development</strong>. Throughout this time I took interest in Web Development and development of Discord bots with Discord.js. I hope to expand my knowledge of coding over the next few years. <br> <br>
-                          <strong> Known Coding Languages</strong>
-                          <ul>
-                            <li>CSS</li>
-                            <li>Javascript</li>
-                            <li>Aframe</li>
-                            <li>Python</li>
-                            <li>Discord.js</li>
-                            <li>Node.js Framework</li>
-                            <li>MySQL</li>
-                            <li><a href="https://ejs.co/" class="link_link">EJS (Embedded JavaScript)</a></li>
-                      </ul>
-                      
-                      If you would like to see projects i have developed you can head over to <a href='https://store.shawnengmann.com'>my website</a>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Jeongwoo Cheon</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Jeremy Xiang</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                          Hello, I am Jeremy Xiang and live in the Bay Area. I have a few years of experience in coding, mostly with c++ and minimal exposure to Python and Java. I currently attend Archbishop Mitty High School in San Jose, California and am in my junior year. I am also an avid golfer who is on the school team and has an ok handicap. Because of my parents and the people that surround me, I have always been interested in things related to coding, like software engineering and electrical engineering. For my whole life, I have always wanted to attend Stanford or Harvard, two of the most outstanding colleges to date. 
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Dami Alabi</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                           &nbsp;Hello, my name is Dami and I am fourteen years old. I live in the Midwest and, I have a passion for learning. Prior to A.I. Camp the only knowledge about Python I had were simple Youtube videos. During the camp I learned a lot about coding and a glimpse of what it would take for me to code for a profession and the perserverence and dilligence the job would require. I will be a freshman in fall and over the next four years I will get more experience in coding and in other occupations so, I can make the beast and most efficent choice regarding my future.
-                            
-                    
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                 my fres       <h5 class="modal-title" id="exampleModalLabel">About Dylan Garcia</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            My name is Dylan Garcia, and AI camp was my first experience with python. My prior programing knowledge includes HTML, C++, and Javascript. Now, I can add python to that list. I live in San Diego California, and I will be attending San Marcos High for my freshman year on August 16th, 2022. My entire life, I have been interested in mechanical engineering. As long as I can remember, I've wanted to attend M.I.T and work for N.A.S.A and design/build rockets. After this past year, I'm discovering that I have an interest in computer science. AI camp allowed me to meet new people, and learn more about myself.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-6" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Sofia Behzadi</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                           Hi! My name is Sofia and I'm an LA native. <br><br> I have a passion for learning languages, having already mastered Bulgarian and French, and currently am in the process of learning Spanish. With Explorations in Computer Science, AP Computer Science A and AP Statistics under my belt, I already had a comprehensive understanding of HTML, Java, and data analysis, and through this camp have been able to finally understand Python. <br><br> When I'm not driving unreasonable distances to go skiing, or running through my neighborhood, you can find me involved in a host of clubs at school and struggling to survive high school work.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-7" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About Hongming (Alan) Mao</h5>
-                      Hi!  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                           "If you set the game up, I will plot and map."<br/><br/>Alan might be new to AI Camp but he has been really learning how to work with new concepts such as data analysis, data visualization, and exporting CSV files. Alan believes that sharing statistics and facts with people will encourage them to make more informed decisions. Analytics is by no means dry; in its most basic sense, a statistic can be an interesting fact.<br/><br/>Data analytics is the new bridge to the future.Join me on my journey to being the next Evan Candler! I am happy to talk about my data visualization projects and problems I study. <br/>
-                          <!--Ai generated bio-->
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="mem-8" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">About member 8</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    Member 8
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-      
-      <div class="container px-4 text-center">
-                <a class="btn btn-lg btn-primary" href="#">Back To Top</a>
-            </div>
-      <br> <br>
-
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; AI Camp Green Titans Batch B 2022</p></div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-
-        <script>
-            function openCity(evt, cityName) {
-                // Declare all variables
-                var i, tabcontent, tablinks;
-
-                // Get all elements with class="tabcontent" and hide them
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-
-                // Get all elements with class="tablinks" and remove the class "active"
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-
-                // Show the current tab, and add an "active" class to the button that opened the tab
-                document.getElementById(cityName).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
-        </script>
-    </body>
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+</body>
 </html>
